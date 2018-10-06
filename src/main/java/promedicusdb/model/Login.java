@@ -1,37 +1,28 @@
 package promedicusdb.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@Table(name = "Login")
+@XmlRootElement
 public class Login {
-	private int idLogin;
-	private String Nombre;
+	private String token;
+	private int nivelPermiso;
 
-	/** Persistente como clave y valor generado por la base de datos */
-	@Id
-	@GeneratedValue
-	public int getIdLogin() {
-		return idLogin;
+	public String getToken() {
+		return token;
 	}
 
-	private void setIdLogin(int idLogin) {
-		this.idLogin = idLogin;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
-	/** Persistente, un tipo basico (string) */
-	@Basic
-	@Column(name = "Nombre")
-	public String getNombre() {
-		return Nombre;
+	public int getNivelPermiso() {
+		return nivelPermiso;
 	}
 
-	public void setNombre(String Nombre) {
-		this.Nombre = Nombre;
+	public void setNivelPermiso(int nivelPermiso) {
+		this.nivelPermiso = nivelPermiso;
 	}
+
+	
+
 }
