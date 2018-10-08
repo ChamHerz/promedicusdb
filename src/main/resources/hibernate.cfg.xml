@@ -13,5 +13,9 @@
         <property name="show_sql">false</property>
         <mapping class="promedicusdb.model.Usuario"/>
         <mapping class="promedicusdb.model.Paciente"/>
+        <mapping class="promedicusdb.model.Especialidad"/>
+        <mapping class="promedicusdb.model.Medico"/>
+        <mapping class="promedicusdb.model.Administrador"/>
+        <mapping class="promedicusdb.model.ObraSocial"/>
     </session-factory>
 </hibernate-configuration>

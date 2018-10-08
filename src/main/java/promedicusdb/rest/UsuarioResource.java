@@ -1,14 +1,17 @@
 package promedicusdb.rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import promedicusdb.consumes.ErrorResponse;
+import promedicusdb.consumes.ResetPassConsume;
 import promedicusdb.consumes.TokenConsume;
 import promedicusdb.dao.UsuarioDAO;
 import promedicusdb.model.Usuario;
@@ -16,6 +19,40 @@ import promedicusdb.util.EmailThread;
 
 @Path("usuario")
 public class UsuarioResource {
+	
+	@GET
+	@Path("/existe-email/{email}/")
+	@Produces("text/plain")
+	public Response existeEmail(@PathParam("email") String email) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Boolean existe = usuarioDAO.existeEmail(email);
+		
+		if (existe) {
+			Usuario usuario = usuarioDAO.getUsuario(email);
+			EmailThread hiloEmail = new EmailThread(
+					usuario.getEmail(),
+					"reset-pass",
+					usuario.getPathReset(),
+					"Link para reset password",
+					"Reset Password",
+					"El siguiente link te permitirá resetear tu password"
+					);
+			hiloEmail.start();
+		}
+		
+		return Response.ok(existe.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@PUT
+	@Path("/reset-pass")
+	@Consumes("application/json")
+	@Produces("text/plain")
+	public Response resetPassword(ResetPassConsume resetPass) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Boolean resetResult = usuarioDAO.resetPassword(resetPass);
+		return Response.ok(resetResult.toString(), MediaType.TEXT_PLAIN).build();		
+	}		
+
 	
 	@PUT
 	@Path("/validar-email")
@@ -36,7 +73,14 @@ public class UsuarioResource {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		usuarioDAO.newUser(usuario);
 		
-		EmailThread hiloEmail = new EmailThread(usuario.getEmail(),usuario.getPathReset());
+		EmailThread hiloEmail = new EmailThread(
+				usuario.getEmail(),
+				"register-email",
+				usuario.getPathReset(),
+				"Link para activar cuenta",
+				"Activar Email",
+				"El siguiente link te permitirá activar tu cuenta"
+				);
 		hiloEmail.start();
 
 		return Response.ok(usuario, MediaType.APPLICATION_JSON).build();

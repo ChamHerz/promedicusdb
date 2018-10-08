@@ -9,6 +9,14 @@ import promedicusdb.model.Paciente;
 
 public class PacienteDAO {
 	
+	public Boolean newPaciente(Paciente paciente) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.saveOrUpdate(paciente);
+		session.getTransaction().commit();
+		return true;
+	}
+	
 	public Paciente getPaciente(String email) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();

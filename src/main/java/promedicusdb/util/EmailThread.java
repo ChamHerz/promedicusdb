@@ -4,7 +4,11 @@ public class EmailThread extends Thread {
 	
 	private String emailTo;
 	private String UUID;
+	private String actionURL;
 	private String URL;
+	private String urlName;
+	private String title;
+	private String body;
 	
 	public String getEmailTo() {
 		return emailTo;
@@ -19,22 +23,26 @@ public class EmailThread extends Thread {
 		UUID = uUID;
 	}
 	
-	public EmailThread(String emailTo, String uUID) {
+	public EmailThread(String emailTo,String actionUrl, String uUID, String urlName, String title, String body) {
 		super();
 		this.emailTo = emailTo;
+		this.actionURL = actionUrl;
 		UUID = uUID;
-		this.URL = "http://localhost:4200/register-email/" + UUID;
+		this.urlName = urlName;
+		this.title = title;
+		this.body = body;
+		this.URL = "http://localhost:4200/" + this.actionURL + "/" + UUID;
 	}
 	@Override
 	public void run() {
 		//ENVIO DE EMAIL
 		SendEmail.send("to",emailTo,
-			    "title","Activar Email",
+			    "title",this.title,
 			    "body",String.format(
 			    "<h1>%s</h1><a href='%s'>%s</a>",
-			    "El siguiente link te permitirá activar tu cuenta",
+			    this.body,
 			    URL,
-			    "Link para activar cuenta")
+			    this.urlName)
 			);	
 	}
 	

@@ -9,67 +9,59 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
-@Table(name = "pacientes")
-public class Paciente {
-	private String Dni;
-	private String Nombre;
-	private String Apellido;
-	private String Direccion;
-	private String Telefono;
-	private String Email;
+@Table(name = "administradores")
+public class Administrador {
+	private String dni;
+	private String nombre;
+	private String apellido;
+	private String telefono;
+	private String email;
 	
 	@Id
+	@Column(name = "DNI")
 	public String getDni() {
-		return Dni;
+		return dni;
 	}
 	public void setDni(String dni) {
-		Dni = dni;
+		this.dni = dni;
 	}
 	
 	@Basic
 	@Column(name = "Nombre")
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
 	public void setNombre(String nombre) {
-		Nombre = nombre;
+		this.nombre = nombre;
 	}
 	
 	@Basic
 	@Column(name = "Apellido")
 	public String getApellido() {
-		return Apellido;
+		return apellido;
 	}
 	public void setApellido(String apellido) {
-		Apellido = apellido;
-	}
-	
-	@Basic
-	@Column(name = "Direccion")
-	public String getDireccion() {
-		return Direccion;
-	}
-	public void setDireccion(String direccion) {
-		Direccion = direccion;
+		this.apellido = apellido;
 	}
 	
 	@Basic
 	@Column(name = "Telefono")
 	public String getTelefono() {
-		return Telefono;
+		return telefono;
 	}
 	public void setTelefono(String telefono) {
-		Telefono = telefono;
+		this.telefono = telefono;
 	}
 	
 	@Basic
-	@Column(name = "Email")
+	@Column(name = "EMAIL")
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
 	
 	
+
 }
