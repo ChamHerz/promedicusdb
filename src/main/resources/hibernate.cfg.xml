@@ -17,5 +17,6 @@
         <mapping class="promedicusdb.model.Medico"/>
         <mapping class="promedicusdb.model.Administrador"/>
         <mapping class="promedicusdb.model.ObraSocial"/>
+        <mapping class="promedicusdb.model.Secretaria"/>
     </session-factory>
 </hibernate-configuration>
