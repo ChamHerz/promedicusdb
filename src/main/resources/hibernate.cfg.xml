@@ -11,6 +11,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydb</property>
         <property name="format_sql">false</property>
         <property name="show_sql">false</property>
+        <property name="hibernate.jdbc.batch_size">20</property>
         <mapping class="promedicusdb.model.Usuario"/>
         <mapping class="promedicusdb.model.Paciente"/>
         <mapping class="promedicusdb.model.Especialidad"/>
@@ -18,5 +19,6 @@
         <mapping class="promedicusdb.model.Administrador"/>
         <mapping class="promedicusdb.model.ObraSocial"/>
         <mapping class="promedicusdb.model.Secretaria"/>
+        <mapping class="promedicusdb.model.Turno"/>
     </session-factory>
 </hibernate-configuration>
