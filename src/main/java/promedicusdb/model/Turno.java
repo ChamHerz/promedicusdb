@@ -26,6 +26,7 @@ public class Turno {
 	//private Time hora;
 	private int estadoTurno;
 	//private EstadoTurno estadoTurno;
+	private Integer idPaciente;
 	//private Paciente paciente;
 	private int idEspecialidad;
 	private Especialidad especialidad;
@@ -102,6 +103,15 @@ public class Turno {
 //	public void setEstadoTurno(EstadoTurno estadoTurno) {
 //		this.estadoTurno = estadoTurno;
 //	}
+	@Basic
+	@Column(name = "DNI_Paciente")
+	public Integer getIdPaciente() {
+		return idPaciente;
+	}
+	public void setIdPaciente(Integer idPaciente) {
+		this.idPaciente = idPaciente;
+	}
+	
 	
 //	@ManyToOne(targetEntity = Paciente.class)
 //    @JoinColumn(name = "DNI_Paciente",referencedColumnName="Dni")
@@ -111,6 +121,8 @@ public class Turno {
 //	public void setPaciente(Paciente paciente) {
 //		this.paciente = paciente;
 //	}
+	
+	
 	
 	@Basic
 	@Column(name = "EstadoTurno")

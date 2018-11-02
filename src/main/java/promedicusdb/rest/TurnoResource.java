@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,6 +19,37 @@ import promedicusdb.model.Turno;
 
 @Path("turno")
 public class TurnoResource {
+	
+	@PUT
+	@Path("/cancelar/{idTurno}/{idPaciente}")
+	@Produces("text/plain")
+	public Response cancelarTurno(@PathParam("idTurno") int idTurno, @PathParam("idPaciente") int idPaciente) {
+		TurnoDAO turnoDAO = new TurnoDAO();
+		Boolean resultado = turnoDAO.cancelar(idTurno,idPaciente);
+		
+		return Response.ok(resultado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@PUT
+	@Path("/solicitar/{idTurno}/{idPaciente}")
+	@Produces("text/plain")
+	public Response solicitarTurno(@PathParam("idTurno") int idTurno, @PathParam("idPaciente") int idPaciente) {
+		TurnoDAO turnoDAO = new TurnoDAO();
+		Boolean resultado = turnoDAO.solicitar(idTurno,idPaciente);
+		
+		return Response.ok(resultado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	
+	@GET
+	@Path("/get-turnos-de-paciente/{idPaciente}/{unEstado}")
+	@Produces("application/json")
+	public Response getTurno(@PathParam("idPaciente") int idPaciente, @PathParam("unEstado") int unEstado) {
+		TurnoDAO turnoDAO = new TurnoDAO();
+		List<Turno> listaTurnos = turnoDAO.getTurnosDePaciente(idPaciente,unEstado);
+		
+		return Response.ok(listaTurnos, MediaType.APPLICATION_JSON).build();
+	}
 	
 	@POST
 	@Path("/get-turnos")
