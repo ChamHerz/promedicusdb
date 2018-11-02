@@ -15,6 +15,16 @@ import promedicusdb.model.Usuario;
 
 public class TurnoDAO {
 	
+	public Boolean confirmar(int idTurno) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Turno turno = (Turno)session.get(Turno.class,idTurno);
+		turno.setEstadoTurno(4);
+		session.update(turno);
+		session.getTransaction().commit();
+		return true;
+	}
+	
 	public Boolean cancelar(int idTurno, int idPaciente) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();

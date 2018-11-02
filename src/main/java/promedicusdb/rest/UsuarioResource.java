@@ -21,6 +21,43 @@ import promedicusdb.util.EmailThread;
 public class UsuarioResource {
 	
 	@GET
+	@Path("/get-by-email-like/{email}/")
+	@Consumes("text/plain")
+	@Produces("application/json")
+	public Response getByNombreOrApellido(@PathParam("nombre") String email) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuario usuario = usuarioDAO.getByEmailLike(email);
+		
+		if ( usuario == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity(
+					new ErrorResponse(1,"Error al cargar usuario")
+					).build();
+		return Response.ok(usuario, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@PUT
+	@Path("/habilitar/{email}/")
+	@Consumes("text/plain")
+	@Produces("text/plain")
+	public Response habilitar(@PathParam("email") String email) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Boolean validado = usuarioDAO.habilitar(email);
+
+		return Response.ok(validado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@PUT
+	@Path("/desabilitar/{email}/")
+	@Consumes("text/plain")
+	@Produces("text/plain")
+	public Response desabilitar(@PathParam("email") String email) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Boolean validado = usuarioDAO.desabilitar(email);
+
+		return Response.ok(validado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@GET
 	@Path("/existe-email/{email}/")
 	@Produces("text/plain")
 	public Response existeEmail(@PathParam("email") String email) {
@@ -35,7 +72,7 @@ public class UsuarioResource {
 					usuario.getPathReset(),
 					"Link para reset password",
 					"Reset Password",
-					"El siguiente link te permitirá resetear tu password"
+					"El siguiente link te permitirï¿½ resetear tu password"
 					);
 			hiloEmail.start();
 		}
@@ -79,7 +116,7 @@ public class UsuarioResource {
 				usuario.getPathReset(),
 				"Link para activar cuenta",
 				"Activar Email",
-				"El siguiente link te permitirá activar tu cuenta"
+				"El siguiente link te permitirï¿½ activar tu cuenta"
 				);
 		hiloEmail.start();
 

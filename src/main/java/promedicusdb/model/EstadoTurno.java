@@ -5,6 +5,6 @@ public enum EstadoTurno {
 	ACTIVO,
 	CUMPLIDO,
 	AUSENTE,
-	OCUPADO,
+	CONFIRMADO,
 	DISPONIBLE
 }

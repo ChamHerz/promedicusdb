@@ -21,6 +21,16 @@ import promedicusdb.model.Turno;
 public class TurnoResource {
 	
 	@PUT
+	@Path("/confirmar/{idTurno}/")
+	@Produces("text/plain")
+	public Response confirmar(@PathParam("idTurno") int idTurno) {
+		TurnoDAO turnoDAO = new TurnoDAO();
+		Boolean resultado = turnoDAO.confirmar(idTurno);
+		
+		return Response.ok(resultado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@PUT
 	@Path("/cancelar/{idTurno}/{idPaciente}")
 	@Produces("text/plain")
 	public Response cancelarTurno(@PathParam("idTurno") int idTurno, @PathParam("idPaciente") int idPaciente) {

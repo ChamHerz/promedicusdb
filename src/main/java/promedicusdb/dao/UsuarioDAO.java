@@ -4,14 +4,46 @@ import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import promedicusdb.consumes.ResetPassConsume;
 import promedicusdb.main.HibernateUtil;
+import promedicusdb.model.Medico;
 import promedicusdb.model.Usuario;
 import promedicusdb.util.LoginResult;
 
 public class UsuarioDAO {
+	
+	public Usuario getByEmailLike(String email) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();	
+		Criteria criteria = session.createCriteria(Usuario.class);
+		criteria.add((Restrictions.like("Email", email, MatchMode.ANYWHERE)));
+		Usuario usuario = (Usuario)criteria.uniqueResult();
+		session.getTransaction().commit();
+		return usuario;
+	}
+	
+	public Boolean habilitar(String idUsuario) {
+		Usuario usuario = this.getUsuario(idUsuario);
+		usuario.setActivo(true);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.update(usuario);
+		session.getTransaction().commit();
+		return true;
+	}
+	
+	public Boolean desabilitar(String idUsuario) {
+		Usuario usuario = this.getUsuario(idUsuario);
+		usuario.setActivo(false);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.update(usuario);
+		session.getTransaction().commit();
+		return true;
+	}
 	
 	public Boolean existeEmail(String email) {
 		Usuario usuario = this.getUsuario(email);
