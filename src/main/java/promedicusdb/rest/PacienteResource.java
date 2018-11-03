@@ -1,5 +1,7 @@
 package promedicusdb.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,12 +12,62 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import promedicusdb.consumes.ErrorResponse;
+import promedicusdb.consumes.PacienteFiltroConsume;
 import promedicusdb.consumes.TokenConsume;
 import promedicusdb.dao.PacienteDAO;
+import promedicusdb.dao.UsuarioDAO;
 import promedicusdb.model.Paciente;
+import promedicusdb.model.Usuario;
 
 @Path("paciente")
 public class PacienteResource {
+	
+	@POST
+	@Path("/get-all-with-filter")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response getPacienteWithFilter(PacienteFiltroConsume pacienteFiltroConsume) {
+		PacienteDAO pacienteDAO = new PacienteDAO();
+		List<Paciente> pacientes = pacienteDAO.getPacienteWithFilter(pacienteFiltroConsume);
+		
+		if (pacientes == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(
+					new ErrorResponse(2,"Error de usuario o password")
+					).build();
+		}
+		
+		return Response.ok(pacientes, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Path("get-all")
+	@Produces("application/json")
+	public Response getAll() {
+		PacienteDAO pacienteDAO = new PacienteDAO();
+		List<Paciente> pacientes = pacienteDAO.getAll();
+		
+		if (pacientes == null) {
+			return Response.ok("Not found", MediaType.TEXT_PLAIN).build();
+		}
+		
+		return Response.ok(pacientes, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Path("/get-by-dni/{dni}/")
+	@Consumes("text/plain")
+	@Produces("application/json")
+	public Response getPacienteByDni(@PathParam("dni") String dni) {
+		PacienteDAO pacienteDAO = new PacienteDAO();
+		Paciente paciente = pacienteDAO.getPacienteByDni(dni);
+		
+		if (paciente == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(
+					new ErrorResponse(1,"No existe paciente")).build();
+		}
+		
+		return Response.ok(paciente, MediaType.APPLICATION_JSON).build();
+	}
 	
 	@GET
 	@Path("/get-by-email/{email}/")

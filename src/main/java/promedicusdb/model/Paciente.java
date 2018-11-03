@@ -17,8 +17,10 @@ public class Paciente {
 	private String Direccion;
 	private String Telefono;
 	private String Email;
+	private Integer idObraSocial;
 	
 	@Id
+	@Column(name = "Dni")
 	public String getDni() {
 		return Dni;
 	}
@@ -71,5 +73,12 @@ public class Paciente {
 		Email = email;
 	}
 	
-	
+	@Basic
+	@Column(name = "IdObraSocial")
+	public Integer getIdObraSocial() {
+		return idObraSocial;
+	}
+	public void setIdObraSocial(Integer idObraSocial) {
+		this.idObraSocial = idObraSocial;
+	}
 }

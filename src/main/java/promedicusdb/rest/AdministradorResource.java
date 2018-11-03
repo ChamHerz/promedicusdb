@@ -11,11 +11,11 @@ import promedicusdb.consumes.ErrorResponse;
 import promedicusdb.dao.AdministradorDAO;
 import promedicusdb.model.Administrador;
 
-@Path("administrador")
+@Path("admin")
 public class AdministradorResource {
 
 	@GET
-	@Path("by-email/{email}/")
+	@Path("get-by-email/{email}/")
 	@Produces("application/json")
 	public Response getAdminByEmail(@PathParam("email") String email) {
 		AdministradorDAO adminDAO = new AdministradorDAO();

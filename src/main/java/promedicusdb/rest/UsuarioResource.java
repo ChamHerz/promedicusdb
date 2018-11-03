@@ -1,5 +1,7 @@
 package promedicusdb.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,6 +21,20 @@ import promedicusdb.util.EmailThread;
 
 @Path("usuario")
 public class UsuarioResource {
+	
+	@GET
+	@Path("get-all")
+	@Produces("application/json")
+	public Response getAll() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		List<Usuario> usuarios = usuarioDAO.getAll();
+		
+		if (usuarios == null) {
+			return Response.ok("Not found", MediaType.TEXT_PLAIN).build();
+		}
+		
+		return Response.ok(usuarios, MediaType.APPLICATION_JSON).build();
+	}
 	
 	@GET
 	@Path("/get-by-email-like/{email}/")

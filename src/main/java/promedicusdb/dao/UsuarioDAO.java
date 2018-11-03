@@ -1,5 +1,6 @@
 package promedicusdb.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Criteria;
@@ -9,11 +10,29 @@ import org.hibernate.criterion.Restrictions;
 
 import promedicusdb.consumes.ResetPassConsume;
 import promedicusdb.main.HibernateUtil;
+import promedicusdb.model.Especialidad;
 import promedicusdb.model.Medico;
 import promedicusdb.model.Usuario;
 import promedicusdb.util.LoginResult;
 
 public class UsuarioDAO {
+	
+	@SuppressWarnings("unchecked")
+	public List<Usuario> getAll() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Criteria criteria = session.createCriteria(Usuario.class);
+		List<Usuario> usuarios = null;
+		try {
+			usuarios = (List<Usuario>)criteria.list();
+		} catch (Exception e) {
+			
+		} finally {
+			session.getTransaction().commit();
+		}
+		
+		return usuarios;
+	}
 	
 	public Usuario getByEmailLike(String email) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
