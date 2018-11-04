@@ -18,6 +18,7 @@ public class Paciente {
 	private String Telefono;
 	private String Email;
 	private Integer idObraSocial;
+	private Integer estadoCivil;
 	
 	@Id
 	@Column(name = "Dni")
@@ -80,5 +81,14 @@ public class Paciente {
 	}
 	public void setIdObraSocial(Integer idObraSocial) {
 		this.idObraSocial = idObraSocial;
+	}
+	
+	@Basic
+	@Column(name = "EstadoCivil")
+	public Integer getEstadoCivil() {
+		return estadoCivil;
+	}
+	public void setEstadoCivil(Integer estadoCivil) {
+		this.estadoCivil = estadoCivil;
 	}
 }

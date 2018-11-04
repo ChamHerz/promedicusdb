@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,10 +26,12 @@ public class Medico {
 	private String telefono;
 	private String email;
 	private Date fechaIngreso;
-	private Especialidad especialidad;
+	private Integer especialidad;
+//	private Especialidad especialidad;
 	
 	@Id
 	@Column(name = "NroLegajo")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getNroLegajo() {
 		return nroLegajo;
 	}
@@ -98,12 +102,21 @@ public class Medico {
 		this.fechaIngreso = fechaIngreso;
 	}
 	
-	@ManyToOne(targetEntity = Especialidad.class)
-    @JoinColumn(name = "ID_Especialidad",referencedColumnName="ID_Especialidad")
-	public Especialidad getEspecialidad() {
+	@Basic
+	@Column(name = "ID_Especialidad")
+	public Integer getEspecialidad() {
 		return especialidad;
 	}
-	public void setEspecialidad(Especialidad especialidad) {
+	public void setEspecialidad(Integer especialidad) {
 		this.especialidad = especialidad;
 	}
+	
+//	@ManyToOne(targetEntity = Especialidad.class)
+//    @JoinColumn(name = "ID_Especialidad",referencedColumnName="ID_Especialidad")
+//	public Especialidad getEspecialidad() {
+//		return especialidad;
+//	}
+//	public void setEspecialidad(Especialidad especialidad) {
+//		this.especialidad = especialidad;
+//	}
 }

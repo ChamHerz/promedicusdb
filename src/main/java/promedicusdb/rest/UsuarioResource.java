@@ -13,14 +13,47 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import promedicusdb.consumes.ErrorResponse;
+import promedicusdb.consumes.PacienteFiltroConsume;
 import promedicusdb.consumes.ResetPassConsume;
 import promedicusdb.consumes.TokenConsume;
+import promedicusdb.consumes.UsuarioFilterConsume;
+import promedicusdb.dao.ObraSocialDAO;
+import promedicusdb.dao.PacienteDAO;
 import promedicusdb.dao.UsuarioDAO;
+import promedicusdb.model.Paciente;
 import promedicusdb.model.Usuario;
 import promedicusdb.util.EmailThread;
 
 @Path("usuario")
 public class UsuarioResource {
+	
+	@PUT
+	@Path("/update-from-paciente")
+	@Consumes("application/json")
+	@Produces("text/plain")
+	public Response updateFromPaciente(Usuario usuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Boolean resultado = usuarioDAO.updateFromPaciente(usuario);
+		
+		return Response.ok(resultado.toString(), MediaType.TEXT_PLAIN).build();
+	}
+	
+	@POST
+	@Path("/get-all-with-filter")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response getUsuarioWithFilter(UsuarioFilterConsume usuarioFilterConsume) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		List<Usuario> usuarios = usuarioDAO.getUsuarioWithFilter(usuarioFilterConsume);
+		
+		if (usuarios == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(
+					new ErrorResponse(2,"Error de usuario o password")
+					).build();
+		}
+		
+		return Response.ok(usuarios, MediaType.APPLICATION_JSON).build();
+	}
 	
 	@GET
 	@Path("get-all")
@@ -40,7 +73,7 @@ public class UsuarioResource {
 	@Path("/get-by-email-like/{email}/")
 	@Consumes("text/plain")
 	@Produces("application/json")
-	public Response getByNombreOrApellido(@PathParam("nombre") String email) {
+	public Response getByNombreOrApellido(@PathParam("email") String email) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = usuarioDAO.getByEmailLike(email);
 		
@@ -52,7 +85,7 @@ public class UsuarioResource {
 	}
 	
 	@PUT
-	@Path("/habilitar/{email}/")
+	@Path("/activar/{email}/")
 	@Consumes("text/plain")
 	@Produces("text/plain")
 	public Response habilitar(@PathParam("email") String email) {
@@ -63,7 +96,7 @@ public class UsuarioResource {
 	}
 	
 	@PUT
-	@Path("/desabilitar/{email}/")
+	@Path("/desactivar/{email}/")
 	@Consumes("text/plain")
 	@Produces("text/plain")
 	public Response desabilitar(@PathParam("email") String email) {
@@ -136,6 +169,20 @@ public class UsuarioResource {
 				);
 		hiloEmail.start();
 
+		return Response.ok(usuario, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Path("/get/{email}/")
+	@Produces("application/json")
+	public Response get(@PathParam("email") String email) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuario usuario = usuarioDAO.getUsuario(email);
+		
+		if ( usuario == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity(
+					new ErrorResponse(1,"Error al cargar usuario")
+					).build();
 		return Response.ok(usuario, MediaType.APPLICATION_JSON).build();
 	}
 	

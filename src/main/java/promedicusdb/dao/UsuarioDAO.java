@@ -8,14 +8,55 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
+import promedicusdb.consumes.PacienteFiltroConsume;
 import promedicusdb.consumes.ResetPassConsume;
+import promedicusdb.consumes.UsuarioFilterConsume;
 import promedicusdb.main.HibernateUtil;
 import promedicusdb.model.Especialidad;
 import promedicusdb.model.Medico;
+import promedicusdb.model.ObraSocial;
+import promedicusdb.model.Paciente;
 import promedicusdb.model.Usuario;
 import promedicusdb.util.LoginResult;
 
 public class UsuarioDAO {
+	
+	public Boolean updateFromPaciente(Usuario usuario) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Usuario unUsuario = this.getUsuario(usuario.getEmail());
+		unUsuario.setNombre(usuario.getNombre());
+		unUsuario.setApellido(usuario.getApellido());
+		session.beginTransaction();
+		session.update(unUsuario);
+		session.getTransaction().commit();
+		return true;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Usuario> getUsuarioWithFilter(UsuarioFilterConsume usuarioFilterConsume) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		List<Usuario> usuarios = null;
+		try {
+			Criteria criteria = session.createCriteria(Usuario.class);
+			if (usuarioFilterConsume.getApellido() != null) {
+				criteria.add(Restrictions.like("apellido", usuarioFilterConsume.getApellido(), MatchMode.ANYWHERE));
+			}
+			if (usuarioFilterConsume.getNombre() != null) {
+				criteria.add(Restrictions.like("nombre", usuarioFilterConsume.getNombre(), MatchMode.ANYWHERE));
+			}
+			if (usuarioFilterConsume.getIdPermiso() != null) {
+				criteria.add(Restrictions.eq("nivelPermiso", usuarioFilterConsume.getIdPermiso()));
+			}
+			usuarios = criteria.list();
+		} catch (Exception e) {
+
+		} finally {
+			session.getTransaction().commit();
+		}
+		
+		return usuarios;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Usuario> getAll() {

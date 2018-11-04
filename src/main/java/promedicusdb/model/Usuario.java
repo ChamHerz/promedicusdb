@@ -13,10 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Usuario {
 	private String Email;
 	private String Password;
-	private int NivelPermiso;
+	private Integer NivelPermiso;
 	private Boolean Activo;
 	private Boolean EmailConfirm;
 	private String PathReset;
+	private String Nombre;
+	private String Apellido;
 	
 	@Id
 	public String getEmail() {
@@ -37,10 +39,10 @@ public class Usuario {
 	
 	@Basic
 	@Column(name = "NivelPermiso")
-	public int getNivelPermiso() {
+	public Integer getNivelPermiso() {
 		return NivelPermiso;
 	}
-	public void setNivelPermiso(int nivelPermiso) {
+	public void setNivelPermiso(Integer nivelPermiso) {
 		NivelPermiso = nivelPermiso;
 	}
 	
@@ -69,5 +71,23 @@ public class Usuario {
 	}
 	public void setPathReset(String pathReset) {
 		PathReset = pathReset;
+	}
+	
+	@Basic
+	@Column(name = "Nombre")
+	public String getNombre() {
+		return Nombre;
+	}
+	public void setNombre(String nombre) {
+		Nombre = nombre;
+	}
+	
+	@Basic
+	@Column(name = "Apellido")
+	public String getApellido() {
+		return Apellido;
+	}
+	public void setApellido(String apellido) {
+		Apellido = apellido;
 	}
 }

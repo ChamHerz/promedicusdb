@@ -15,6 +15,21 @@ import promedicusdb.model.Usuario;
 
 public class PacienteDAO {
 	
+	public Boolean updateFromPaciente(Paciente paciente) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Paciente unPaciente = this.getPaciente(paciente.getEmail());
+		unPaciente.setNombre(paciente.getNombre());
+		unPaciente.setApellido(paciente.getApellido());
+		unPaciente.setDireccion(paciente.getDireccion());
+		unPaciente.setEstadoCivil(paciente.getEstadoCivil());
+		unPaciente.setTelefono(paciente.getTelefono());
+		unPaciente.setIdObraSocial(paciente.getIdObraSocial());
+		session.beginTransaction();
+		session.update(unPaciente);
+		session.getTransaction().commit();
+		return true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Paciente> getPacienteWithFilter(PacienteFiltroConsume pacienteFiltroConsume) {
 		Session session = HibernateUtil.getSessionFactory().openSession();

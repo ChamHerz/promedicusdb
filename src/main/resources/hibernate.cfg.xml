@@ -20,5 +20,7 @@
         <mapping class="promedicusdb.model.ObraSocial"/>
         <mapping class="promedicusdb.model.Secretaria"/>
         <mapping class="promedicusdb.model.Turno"/>
+        <mapping class="promedicusdb.model.MedicoObraSocial"/>
+        <mapping class="promedicusdb.model.MedicoSecretaria"/>
     </session-factory>
 </hibernate-configuration>
