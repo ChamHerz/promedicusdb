@@ -31,7 +31,7 @@ public class EmailThread extends Thread {
 		this.urlName = urlName;
 		this.title = title;
 		this.body = body;
-		this.URL = "http://localhost:4200/" + this.actionURL + "/" + UUID;
+		this.URL = "http://localhost:4200/#/" + this.actionURL + "/" + UUID;
 	}
 	@Override
 	public void run() {
