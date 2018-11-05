@@ -12,8 +12,32 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import promedicusdb.main.HibernateUtil;
 import promedicusdb.model.Medico;
 import promedicusdb.model.Secretaria;
+import promedicusdb.model.Usuario;
 
 public class SecretariaDAO {
+	
+	public Boolean updateFromAdmin(Secretaria secretaria) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Secretaria unaSecretaria = this.getSecretaria(secretaria.getNroLegajo());
+		unaSecretaria.setNombre(secretaria.getNombre());
+		unaSecretaria.setApellido(secretaria.getApellido());
+		unaSecretaria.setDni(secretaria.getDni());
+		unaSecretaria.setDireccion(secretaria.getDireccion());
+		unaSecretaria.setTelefono(secretaria.getTelefono());
+		session.beginTransaction();
+		session.update(unaSecretaria);
+		session.getTransaction().commit();
+		
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuario usuario = usuarioDAO.getUsuario(secretaria.getEmail());
+		usuario.setNombre(unaSecretaria.getNombre());
+		usuario.setApellido(unaSecretaria.getApellido());
+		session.beginTransaction();
+		session.update(usuario);
+		session.getTransaction().commit();
+		
+		return true;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Secretaria> getAllSecretariasNames() {
@@ -48,4 +72,11 @@ public class SecretariaDAO {
 		return secretaria;
 	}
 	
+	public Secretaria getSecretaria(int nroLegajo) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Secretaria secretaria = (Secretaria)session.get(Secretaria.class,nroLegajo);
+		session.getTransaction().commit();
+		return secretaria;
+	}
 }

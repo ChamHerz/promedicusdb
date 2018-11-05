@@ -18,6 +18,37 @@ import promedicusdb.model.MedicoSecretaria;
 @Path("medico-secretaria")
 public class MedicoSecretariaResource {
 	
+	@GET
+	@Path("get-by-secretary/{nrolegajo}/")
+	@Produces("text/plain")
+	public Response getBySecretary(@PathParam("nrolegajo") int nrolegajoSecretaria) {
+		MedicoSecretariaDAO medicoSecretariaDAO = new MedicoSecretariaDAO();
+		List<MedicoSecretaria> medicoSecretaria = medicoSecretariaDAO.getBySecretary(nrolegajoSecretaria);
+		
+		if (medicoSecretaria == null) {
+			return Response.ok("Not found", MediaType.TEXT_PLAIN).build();
+		}
+		
+		return Response.ok(medicoSecretaria, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("set-by-secretary/{nrolegajo}/")
+	@Consumes("application/json")
+	@Produces("text/plain")
+	public Response setBySecretary(
+			@PathParam("nrolegajo") int nrolegajoSecretaria,
+			List<MedicoSecretaria> medicoSecretaria) {
+		MedicoSecretariaDAO medicoSecretariaDAO = new MedicoSecretariaDAO();
+		Boolean resultado = medicoSecretariaDAO.setBySecretary(nrolegajoSecretaria,medicoSecretaria);
+		
+		if (resultado == null) {
+			return Response.ok("Not found", MediaType.TEXT_PLAIN).build();
+		}
+		
+		return Response.ok(resultado, MediaType.APPLICATION_JSON).build();
+	}
+	
 	@POST
 	@Path("set-by-medico/{nrolegajo}/")
 	@Consumes("application/json")

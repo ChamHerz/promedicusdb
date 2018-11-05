@@ -12,6 +12,22 @@ import promedicusdb.model.MedicoSecretaria;
 
 public class MedicoSecretariaDAO {
 	
+	public Boolean setBySecretary(
+			int nrolegajoSecretaria,
+			List<MedicoSecretaria> medicoSecretarias) {
+		
+		deleteBySecretary(nrolegajoSecretaria);
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		for (MedicoSecretaria medicoSecretaria : medicoSecretarias) {
+			session.save(medicoSecretaria);
+		}
+		session.getTransaction().commit();
+
+		return true;
+	}
+	
 	public Boolean setByMedico(
 			int nrolegajoMedico,
 			List<MedicoSecretaria> medicoSecretarias) {
@@ -26,6 +42,17 @@ public class MedicoSecretariaDAO {
 		session.getTransaction().commit();
 
 		return true;
+	}
+	
+	private void deleteBySecretary(int nroLegajoSecretaria) {
+		List<MedicoSecretaria> listaMedicoSecretaria = getBySecretary(nroLegajoSecretaria);
+				
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		for (MedicoSecretaria medicoSecretaria : listaMedicoSecretaria) {
+			session.delete(medicoSecretaria);
+		}
+		session.getTransaction().commit();
 	}
 	
 	private void deleteByMedico(int nroLegajoMedico) {
@@ -56,6 +83,17 @@ public class MedicoSecretariaDAO {
 		session.beginTransaction();	
 		Criteria criteria = session.createCriteria(MedicoSecretaria.class);
 		criteria.add((Restrictions.eq("nroLegajoMedico", nroLegajoMedico)));	
+		List<MedicoSecretaria> medicoSecretaria = criteria.list();
+		session.getTransaction().commit();
+		return medicoSecretaria;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<MedicoSecretaria> getBySecretary(int nrolegajoSecretaria) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();	
+		Criteria criteria = session.createCriteria(MedicoSecretaria.class);
+		criteria.add((Restrictions.eq("nroLegajoSecretaria", nrolegajoSecretaria)));	
 		List<MedicoSecretaria> medicoSecretaria = criteria.list();
 		session.getTransaction().commit();
 		return medicoSecretaria;
