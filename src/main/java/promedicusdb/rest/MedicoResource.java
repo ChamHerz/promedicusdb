@@ -15,13 +15,26 @@ import javax.ws.rs.core.Response;
 import promedicusdb.consumes.ErrorResponse;
 import promedicusdb.consumes.MedicoFilterConsume;
 import promedicusdb.consumes.PacienteFiltroConsume;
+import promedicusdb.dao.ConfiguracionDAO;
 import promedicusdb.dao.MedicoDAO;
 import promedicusdb.dao.PacienteDAO;
+import promedicusdb.model.Configuracion;
 import promedicusdb.model.Medico;
 import promedicusdb.model.Paciente;
 
 @Path("medico")
 public class MedicoResource {
+	
+	@GET
+	@Path("/get-new-nrolegajo")
+	@Produces("text/plain")
+	public Response getNewNroLegajo() {
+		ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
+		Configuracion configuracion = configuracionDAO.getConfiguracion("nroLegajo");
+		int newNroLegajo = configuracion.getValor() + 1;
+		
+		return Response.ok(newNroLegajo + "", MediaType.TEXT_PLAIN).build();
+	}
 	
 	@PUT
 	@Path("/update-from-admin")

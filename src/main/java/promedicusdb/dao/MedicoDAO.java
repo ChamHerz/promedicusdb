@@ -50,6 +50,9 @@ public class MedicoDAO {
 		session.beginTransaction();
 		session.saveOrUpdate(medico);
 		session.getTransaction().commit();
+		
+		ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
+		configuracionDAO.incrementar();
 		return true;
 	}
 	

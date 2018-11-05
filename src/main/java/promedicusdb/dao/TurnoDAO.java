@@ -69,6 +69,28 @@ public class TurnoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Turno> getTurnosDeMedico(int nrolegajo, int unEstado){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		List<Turno> listaTurnos = null;
+		try {
+			Criteria criteria = session.createCriteria(Turno.class)
+				.add((Restrictions.eq("nroLegajo", nrolegajo)));
+			if (unEstado != -1) {
+				criteria.add((Restrictions.eq("estadoTurno", unEstado)));
+			}
+			
+			listaTurnos = criteria.list();
+		} catch (Exception e) {
+
+		} finally {
+			session.getTransaction().commit();
+		}
+		
+		return listaTurnos;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Turno> getTurnos(TurnosConsultaConsume turnos){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();

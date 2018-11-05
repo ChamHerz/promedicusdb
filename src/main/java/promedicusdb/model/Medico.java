@@ -31,7 +31,6 @@ public class Medico {
 	
 	@Id
 	@Column(name = "NroLegajo")
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getNroLegajo() {
 		return nroLegajo;
 	}

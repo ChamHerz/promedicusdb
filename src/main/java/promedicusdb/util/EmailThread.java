@@ -36,16 +36,38 @@ public class EmailThread extends Thread {
 	@Override
 	public void run() {
 		//ENVIO DE EMAIL
-		SendEmail.send("to",emailTo,
-			    "title",this.title,
-			    "body",String.format(
-			    "<h1>%s</h1><a href='%s'>%s</a>",
-			    this.body,
-			    URL,
-			    this.urlName)
-			);	
+//		if (this.actionURL == "reset-pass") {
+//			SendEmail.send("to",emailTo,
+//				    "title",this.title,
+//				    "body",String.format(
+//				    "<h1>%s</h1><a href='%s'>%s</a>",
+//				    this.body,
+//				    URL,
+//				    this.urlName)
+//				);
+//			return;
+//		}
+		if (this.actionURL == "reset-pass") {
+			SendEmail.send("to",emailTo,
+				    "title",this.title,
+				    "body",String.format(
+				    "<div style='font-size: 50px;text-align: center;padding: 30px 0;border: 5px solid black;background-color: rgb(63,81,181);color: black;margin: auto;width: 400px'>Promedicus</div><div style='text-align: center;padding: 30px 0;color: black;margin: auto;'><h2>%s</h2></div><div style='text-align: center;padding: 30px 0;color: black;margin: auto;'><div style='border: solid 1px;margin: auto;background-color: rgb(63,81,181);padding: 5px;width: 120px;'><a style='color: white' href='%s'><b>%s</b></a></div></div>",
+				    this.body,
+				    URL,
+				    this.urlName)
+				);
+			return;
+		}
+		if (this.actionURL == "send-turno") {
+			SendEmail.send("to",emailTo,
+				    "title",this.title,
+				    "body",String.format(
+				    "<div style='font-size: 50px;text-align: center;padding: 30px 0;border: 5px solid black;background-color: rgb(63,81,181);color: black;margin: auto;width: 400px'>Promedicus</div><div style='text-align: center;padding: 30px 0;color: black;margin: auto;'><h1>%s</h1></div><div style='text-align: center;padding: 30px 0;color: black;margin: auto;'><h2>%s</h2></div>",
+				    this.body,
+				    this.urlName)
+				);
+			return;
+		}
 	}
 	
-	
-
 }

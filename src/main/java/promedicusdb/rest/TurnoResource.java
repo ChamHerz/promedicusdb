@@ -14,8 +14,12 @@ import javax.ws.rs.core.Response;
 
 import promedicusdb.consumes.ErrorResponse;
 import promedicusdb.consumes.TurnosConsultaConsume;
+import promedicusdb.dao.PacienteDAO;
 import promedicusdb.dao.TurnoDAO;
+import promedicusdb.model.Paciente;
 import promedicusdb.model.Turno;
+import promedicusdb.model.Usuario;
+import promedicusdb.util.EmailThread;
 
 @Path("turno")
 public class TurnoResource {
@@ -47,6 +51,25 @@ public class TurnoResource {
 		TurnoDAO turnoDAO = new TurnoDAO();
 		Boolean resultado = turnoDAO.solicitar(idTurno,idPaciente);
 		
+		if(resultado) {
+			PacienteDAO pacienteDAO = new PacienteDAO();
+			Paciente paciente = pacienteDAO.getPacienteByDni(idPaciente + "");
+			Turno turno = turnoDAO.getTurno(idTurno);
+			EmailThread hiloEmail = new EmailThread(
+					paciente.getEmail(),
+					"send-turno",
+					"nada",
+					String.format("fecha: %s, doctor: %s %s, especialidad: %s",
+							turno.getFechaHora(),
+							turno.getMedico().getNombre(),
+							turno.getMedico().getApellido(),
+							turno.getEspecialidad().getDescripcion()),
+					"Datos del turno",
+					"Aqui te dejamos los datos del turno"
+					);
+			hiloEmail.start();
+		}
+		
 		return Response.ok(resultado.toString(), MediaType.TEXT_PLAIN).build();
 	}
 	
@@ -57,6 +80,16 @@ public class TurnoResource {
 	public Response getTurno(@PathParam("idPaciente") int idPaciente, @PathParam("unEstado") int unEstado) {
 		TurnoDAO turnoDAO = new TurnoDAO();
 		List<Turno> listaTurnos = turnoDAO.getTurnosDePaciente(idPaciente,unEstado);
+		
+		return Response.ok(listaTurnos, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Path("/get-turnos-de-medico/{nrolegajo}/{unEstado}")
+	@Produces("application/json")
+	public Response getTurnoMedico(@PathParam("nrolegajo") int nrolegajo, @PathParam("unEstado") int unEstado) {
+		TurnoDAO turnoDAO = new TurnoDAO();
+		List<Turno> listaTurnos = turnoDAO.getTurnosDeMedico(nrolegajo,unEstado);
 		
 		return Response.ok(listaTurnos, MediaType.APPLICATION_JSON).build();
 	}
